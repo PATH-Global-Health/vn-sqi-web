@@ -1,13 +1,14 @@
 import { UserInfo } from 'models';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 export const authUtils = {
-  checkPermission: (user: UserInfo | undefined, permissionCode: string) => {
-    if (user) {
-      const username = user.userInfo.username;
-      if (['longhdt', 'admin', 'sqi_admin'].includes(username)) {
+  checkPermission: (access_token: string | null, permissionCode: string) => {
+    if (access_token) {
+      const decoded = jwtDecode<any>(access_token);
+      if (decoded.Role === 'sqi_admin') {
         return true;
       }
-      if (['ladders', 'epic'].includes(username) && permissionCode == 'SQI_LIST_FORM') {
+      if (decoded.Role === 'sqi_project' && permissionCode == 'SQI_LIST_FORM') {
         return true;
       }
     }

@@ -68,6 +68,8 @@ export function AppLayout() {
     setOpen(!open);
   };
   const user = useAppSelector((s) => s.auth.currentUser);
+  const access_token =
+    localStorage.getItem('access_token') ?? sessionStorage.getItem('access_token');
 
   useEffect(() => {
     dispatch(authActions.getUserInfo());
@@ -102,7 +104,7 @@ export function AppLayout() {
         </Toolbar>
         <Divider />
         <List component="nav">
-          {authUtils.checkPermission(user, 'SQI_LIST_FORM') && (
+          {authUtils.checkPermission(access_token, 'SQI_LIST_FORM') && (
             <Link to="/sqi">
               <ListItemButton>
                 <ListItemIcon>
@@ -112,7 +114,7 @@ export function AppLayout() {
               </ListItemButton>
             </Link>
           )}
-          {authUtils.checkPermission(user, 'SQI_LIST_REPORT') && (
+          {authUtils.checkPermission(access_token, 'SQI_LIST_REPORT') && (
             <Link to="/report">
               <ListItemButton>
                 <ListItemIcon>
@@ -136,12 +138,12 @@ export function AppLayout() {
       >
         <Header />
         <Switch>
-          {authUtils.checkPermission(user, 'SQI_LIST_FORM') && (
+          {authUtils.checkPermission(access_token, 'SQI_LIST_FORM') && (
             <Route path="/sqi">
               <SQiFeature />
             </Route>
           )}
-          {authUtils.checkPermission(user, 'SQI_LIST_REPORT') && (
+          {authUtils.checkPermission(access_token, 'SQI_LIST_REPORT') && (
             <Route path="/report">
               <ReportFeature />
             </Route>
